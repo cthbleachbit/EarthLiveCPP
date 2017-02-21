@@ -2,6 +2,10 @@
 
 A CPP rewrite of [EarthLiveShell](https://github.com/cthbleachbit/EarthLiveShell.git) which is my shell script rewrite of [EarthLiveSharp](https://github.com/bitdust/EarthLiveSharp) which is written in C# and windows-only.
 
+Live view of the Earth from space, right on your (nix) desktop. Images are from the satellite [himawari8](http://himawari8.nict.go.jp), the only satellite (I know) that releases image of visible wavelength timely to public for free.
+
+For a sneak peek for what this might be like, check [EarthLiveShell](https://github.com/cthbleachbit/EarthLiveShell.git).
+
 #### Contributors
 
 * Yue Sun <yues@cs.wisc.edu>
