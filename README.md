@@ -13,10 +13,6 @@ The C# one can only run on windows, the shell implementation has performance con
 
 ### Feature list
 
-R = Need rewrite
-N = New
-D = Will deprecate
-
 ###### Control part:
 
 Program invoked:
