@@ -15,6 +15,11 @@ For a sneak peek for what this might be like, check [EarthLiveShell](https://git
 
 The C# one can only run on windows, the shell implementation has performance constraints. For original purpose, check [EarthLiveShell](https://github.com/cthbleachbit/EarthLiveShell.git).
 
+### Libraries used
+
+* `curl`
+* `imagemagick`
+
 ### Feature list
 
 ###### Control part:
