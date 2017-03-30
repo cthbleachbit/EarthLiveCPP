@@ -17,6 +17,8 @@ The C# one can only run on windows, the shell implementation has performance con
 
 ### Libraries used
 
+* `boost/filesystem`
+* `boost/system`
 * `curl`
 * `imagemagick`
 

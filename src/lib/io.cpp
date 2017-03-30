@@ -2,12 +2,12 @@
  * ==========================================================
  * EarthLiveCPP
  * I/O functions library
- * 
+ *
  * Copyright (C) Tianhao Chai (cth451) <cth451@gmail.com>
- * 
+ *
  * Inspired by bitdust's [ https://github.com/bitdust ]
  * Licensed under LGPL 3
- * 
+ *
  * This program is distributed in the hope that it will be
  * useful, but WITHOUT ANY WARRANTY; without even the
  * implied warranty of MERCHANTABILITY or FITNESS FOR A
@@ -22,13 +22,16 @@
 #include <ctime>
 #include <fstream>
 
-ioInstance::ioInstance(std::string &logFilePath) {
+ioInstance::ioInstance(const std::string &logFilePath) {
 	(this -> logHandle).open(logFilePath);
+	if (!(this -> logHandle)) {
+		throw 20;
+	}
 };
 
 /**
  * @brief write a line of log to disk
- * 
+ *
  * @param infType
  *        type of this piece of log, 1 means info, 2 means error.
  * @param info

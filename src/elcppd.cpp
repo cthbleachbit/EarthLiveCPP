@@ -2,12 +2,12 @@
  * ==========================================================
  * EarthLiveCPP
  * Backend process
- * 
+ *
  * Copyright (C) Tianhao Chai (cth451) <cth451@gmail.com>
- * 
+ *
  * Inspired by bitdust's [ https://github.com/bitdust ]
  * Licensed under LGPL 3
- * 
+ *
  * This program is distributed in the hope that it will be
  * useful, but WITHOUT ANY WARRANTY; without even the
  * implied warranty of MERCHANTABILITY or FITNESS FOR A
@@ -18,15 +18,15 @@
 
 #include <string>
 #include <iostream>
-#include <fstream>
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <boost/filesystem.hpp>
 #include <curl/curl.h>
 
 #include "lib/io.hpp"
 
 const std::string SITE = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/";
-const std::string DAEMON_LOG = "/.earthlivecpp/daemon.log";
 
 static size_t write_data(void *contents, size_t size, size_t nmemb, void *stream)
 {
@@ -63,12 +63,18 @@ int downloadRoutine(std::string& url, std::string& file) {
 }
 
 int main(int argc, char *argv[]) {
-	// setting up logging
-	std::ofstream logHandle();
+	// setting up logging and storage space
+	const std::string HOME_DIR = getenv("HOME");
+	const std::string CONFIG_DIR = HOME_DIR + "/.earthlivecpp/";
+	boost::filesystem::path confDir(CONFIG_DIR);
+	if (!boost::filesystem::exists(confDir)) {
+		boost::filesystem::create_directory(confDir);
+	}
+	//ioInstance logHandler(CONFIG_DIR + "log.txt");
 
 	// network initialize
 	curl_global_init(CURL_GLOBAL_DEFAULT);
-	
+
 	// verify arguments
 	if (argc != 4) {
 		std::cerr << "Need 3 arguments. Got " << argc - 1 << "." << std::endl;

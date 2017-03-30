@@ -21,12 +21,12 @@
 
 #include <string>
 #include <ctime>
-#include <fstream>
+#include <boost/filesystem.hpp>
 
 class ioInstance {
 
 private:
-	std::ofstream logHandle;
+	boost::filesystem::ofstream logHandle;
 
 public:
 	/**
@@ -35,7 +35,7 @@ public:
 	 * @param logFilePath
 	 *        log file path.
 	 */
-	ioInstance(std::string &logFilePath);
+	ioInstance(const std::string &logFilePath);
 
 	/**
 	 * @brief write a line of log to disk
