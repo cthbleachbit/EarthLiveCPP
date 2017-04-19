@@ -27,13 +27,12 @@
 
 #include "lib/io.hpp"
 
-const std::string SITE = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/";
-
-const std::string& assembleUrl(int x, int, y, int dimens, int datetime) {
-	if (d == 0) {
-		return SITE.append("latest.json");
+const std::string& assembleUrl(int x, int y, int dimens, int datetime) {
+	if (dimens == 0) {
+		const std::string SITE = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/";
+		return SITE+ "latest.json";
 	} else {
-		std::string urlWithDimens = SITE.append(std::to_string(d) + "d/550/");
+		std::string urlWithDimens = SITE + std::to_string(dimens) + "d/550/";
 		std::string tStr = std::to_string(datetime);
 		// structure yyyy/mm/dd/hhmmss
 		std::string finalUrl = urlWithDimens + tStr.substr(0,4) + "/" + tStr.substr(4,6) + "/" + tStr.substr(6,8) + "/" + tStr.substr(8);
@@ -64,7 +63,7 @@ int downloadRoutine(std::string& url, std::string& blob) {
 	if (curl) {// if successfully created curl struct
 		curl_easy_setopt(curl, CURLOPT_URL, c_url);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, imageBlob);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, blob);
 		retCode = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
 	}
@@ -91,4 +90,5 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	// check update
+	
 }
