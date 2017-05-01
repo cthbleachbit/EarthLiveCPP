@@ -18,6 +18,8 @@
 
 #include <string>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -76,10 +78,16 @@ int downloadRoutine(std::string& url, std::string& blob) {
 
 void imageUpdateRoutine(std::string& timestamp, int density, std::ofstream& os) {
 	std::string tileURL;
-	assembleUrl(tileURL, 0, 0, density, timestamp);
 	std::string result;
-	downloadRoutine(tileURL, result);
-	std::cout << result << std::endl;
+	std::vector<std::vector<std::string> > imageArray(density, std::vector<std::string>(density, ""));
+	for (int i = 0; i < density; i++) {
+		for (int j = 0; j < density; j++) {
+			assembleUrl(tileURL, i, j, density, timestamp);
+			downloadRoutine(tileURL, result);
+			std::cout << i << " " << j << std::endl;
+			imageArray[i][j] = result;
+		}
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -109,11 +117,13 @@ int main(int argc, char *argv[]) {
 	} else {
 		optionRefresh = std::atoi(argv[1]);
 		optionDensity = std::atoi(argv[2]);
-	}
+	}	
 
 	// start timing routine
-	while (!usleep(optionRefresh)) {
+	while (true) {
 		// check update
+		jsonURL = "";
+		jsonContent = "";
 		assembleUrl(jsonURL, 0, 0, 0, jsonURL); // get jsonURL
 		downloadRoutine(jsonURL,jsonContent);
 		jsonContent = jsonContent.substr(9,19);
@@ -124,5 +134,6 @@ int main(int argc, char *argv[]) {
 			std::ofstream image(CONFIG_IMAGE);
 			imageUpdateRoutine(jsonContent, optionDensity, image);
 		}
+		std::this_thread::sleep_for(std::chrono::seconds(optionRefresh));
 	}
 }
