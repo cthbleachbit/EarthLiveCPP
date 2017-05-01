@@ -19,24 +19,26 @@
 #include <string>
 #include <iostream>
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <curl/curl.h>
 
 #include "lib/io.hpp"
 
-const std::string& assembleUrl(int x, int y, int dimens, int datetime) {
+void assembleUrl(std::string& target, int x, int y, int dimens, const std::string& datetime) {
+	const std::string SITE = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/";
 	if (dimens == 0) {
-		const std::string SITE = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/";
-		return SITE+ "latest.json";
+		target = SITE+ "latest.json";
 	} else {
 		std::string urlWithDimens = SITE + std::to_string(dimens) + "d/550/";
-		std::string tStr = std::to_string(datetime);
 		// structure yyyy/mm/dd/hhmmss
-		std::string finalUrl = urlWithDimens + tStr.substr(0,4) + "/" + tStr.substr(4,6) + "/" + tStr.substr(6,8) + "/" + tStr.substr(8);
-		return finalUrl;
+		std::string finalUrl = urlWithDimens + datetime.substr(0,4) + "/" + datetime.substr(5,7) + "/" + datetime.substr(8,10) + "/"
+		 	 	+ datetime.substr(11,13) + datetime.substr(14,16) + datetime.substr(17);
+		target = finalUrl;
 	}
 }
 
@@ -70,25 +72,55 @@ int downloadRoutine(std::string& url, std::string& blob) {
 	return retCode;
 }
 
+void imageUpdateRoutine(std::string& timestamp, int density, std::ofstream& os) {
+	std::string tileURL;
+	assembleUrl(tileURL, 0, 0, density, timestamp);
+	std::string result;
+	downloadRoutine(tileURL, result);
+	std::cout << result << std::endl;
+}
 
 int main(int argc, char *argv[]) {
 	// setting up logging and storage space
 	const std::string HOME_DIR = getenv("HOME");
 	const std::string CONFIG_DIR = HOME_DIR + "/.earthlivecpp/";
+	const std::string CONFIG_IMAGE = HOME_DIR + "/.earthlivecpp/final.png";
 	const boost::filesystem::path confDir(CONFIG_DIR);
 	if (!boost::filesystem::exists(confDir)) {
 		boost::filesystem::create_directory(confDir);
 	}
 	// ioInstance logHandler(CONFIG_DIR + "log.txt");
 
-	// network initialize
+	// initialize
 	curl_global_init(CURL_GLOBAL_DEFAULT);
+	int optionRefresh;
+	int optionDensity;
+	std::string lastUpdate = "0";
 
 	// verify arguments
 	if (argc != 4) {
 		std::cerr << "Need 3 arguments. Got " << argc - 1 << "." << std::endl;
+		printHelp();
 		return 1;
+	} else {
+		optionRefresh = std::atoi(argv[1]);
+		optionDensity = std::atoi(argv[2]);
 	}
-	// check update
-	
+
+	// start timing routine
+	while (usleep(optionRefresh)) {
+		// check update
+		std::string jsonURL;
+		assembleUrl(jsonURL, 0, 0, 0, jsonURL); // get jsonURL
+		std::string jsonContent;
+		downloadRoutine(jsonURL,jsonContent);
+		jsonContent = jsonContent.substr(9,19);
+		// got timestamp updated
+		std::cout << jsonContent << std::endl;
+		if (lastUpdate == "" || jsonContent > lastUpdate) {
+			lastUpdate = jsonContent;
+			std::ofstream image(CONFIG_IMAGE);
+			imageUpdateRoutine(jsonContent, optionDensity, image);
+		}
+	}
 }
