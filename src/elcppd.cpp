@@ -34,10 +34,12 @@ void assembleUrl(std::string& target, int x, int y, int dimens, const std::strin
 	if (dimens == 0) {
 		target = SITE+ "latest.json";
 	} else {
-		std::string urlWithDimens = SITE + std::to_string(dimens) + "d/550/";
+		std::string dimensSuffix = std::to_string(dimens) + "d/550/";
+		std::string dateSuffix = datetime.substr(0,4) + "/" + datetime.substr(5,2) + "/" + datetime.substr(8,2) + "/";
+		std::string timeSuffix = datetime.substr(11,2) + datetime.substr(14,2) + datetime.substr(17) + "_";
+		std::string tileSuffix = std::to_string(x) + "_" + std::to_string(y) + ".png";
 		// structure yyyy/mm/dd/hhmmss
-		std::string finalUrl = urlWithDimens + datetime.substr(0,4) + "/" + datetime.substr(5,7) + "/" + datetime.substr(8,10) + "/"
-		 	 	+ datetime.substr(11,13) + datetime.substr(14,16) + datetime.substr(17);
+		std::string finalUrl = SITE + dimensSuffix + dateSuffix + timeSuffix + tileSuffix;
 		target = finalUrl;
 	}
 }
@@ -96,6 +98,8 @@ int main(int argc, char *argv[]) {
 	int optionRefresh;
 	int optionDensity;
 	std::string lastUpdate = "0";
+	std::string jsonURL;
+	std::string jsonContent;
 
 	// verify arguments
 	if (argc != 4) {
@@ -108,11 +112,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	// start timing routine
-	while (usleep(optionRefresh)) {
+	while (!usleep(optionRefresh)) {
 		// check update
-		std::string jsonURL;
 		assembleUrl(jsonURL, 0, 0, 0, jsonURL); // get jsonURL
-		std::string jsonContent;
 		downloadRoutine(jsonURL,jsonContent);
 		jsonContent = jsonContent.substr(9,19);
 		// got timestamp updated
