@@ -21,6 +21,7 @@
 #include <chrono>
 #include <thread>
 
+#include <Magick++.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,13 +80,17 @@ int downloadRoutine(std::string& url, std::string& blob) {
 void imageUpdateRoutine(std::string& timestamp, int density, std::ofstream& os) {
 	std::string tileURL;
 	std::string result;
-	std::vector<std::vector<std::string> > imageArray(density, std::vector<std::string>(density, ""));
+	std::vector<std::vector<Magick::Blob> > imageArray(density, std::vector<Magick::Blob>(density));
 	for (int i = 0; i < density; i++) {
 		for (int j = 0; j < density; j++) {
+			tileURL = "";
+			result = "";
 			assembleUrl(tileURL, i, j, density, timestamp);
 			downloadRoutine(tileURL, result);
 			std::cout << i << " " << j << std::endl;
-			imageArray[i][j] = result;
+			size_t len = result.size();
+			Magick::Blob imageBlob(static_cast<const void *>(result.c_str()), len);
+			imageArray[i][j] = imageBlob;
 		}
 	}
 }
@@ -103,6 +108,7 @@ int main(int argc, char *argv[]) {
 
 	// initialize
 	curl_global_init(CURL_GLOBAL_DEFAULT);
+	InitializeMagick(*argv);
 	int optionRefresh;
 	int optionDensity;
 	std::string lastUpdate = "0";
