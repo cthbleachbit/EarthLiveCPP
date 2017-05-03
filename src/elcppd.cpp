@@ -30,7 +30,6 @@
 #include <boost/format.hpp>
 #include <curl/curl.h>
 
-#include "lib/io.hpp"
 
 void assembleUrl(std::string& target, int x, int y, int dimens, const std::string& datetime) {
 	const std::string SITE = "http://himawari8-dl.nict.go.jp/himawari8/img/D531106/";
@@ -79,20 +78,37 @@ int downloadRoutine(std::string& url, std::string& blob) {
 
 void imageUpdateRoutine(std::string& timestamp, int density, std::ofstream& os) {
 	std::string tileURL;
-	std::string result;
-	std::vector<std::vector<Magick::Blob> > imageArray(density, std::vector<Magick::Blob>(density));
-	for (int i = 0; i < density; i++) {
-		for (int j = 0; j < density; j++) {
+	std::vector<std::string> bufferArray;
+	std::vector<Magick::Blob> blobArray;
+	std::vector<Magick::Image> tileArray;
+	std::vector<Magick::Image> thumb;
+	Magick::Blob finalBlob;
+	// download all tiles
+	for (int j = 0; j < density; j++) {
+		for (int i = 0; i < density; i++) {
 			tileURL = "";
-			result = "";
+			std::string buffer = "";
 			assembleUrl(tileURL, i, j, density, timestamp);
-			downloadRoutine(tileURL, result);
-			std::cout << i << " " << j << std::endl;
-			size_t len = result.size();
-			Magick::Blob imageBlob(static_cast<const void *>(result.c_str()), len);
-			imageArray[i][j] = imageBlob;
+			downloadRoutine(tileURL, buffer);
+			size_t len = buffer.size();
+			bufferArray.push_back(buffer);
+			Magick::Blob tileBlob(static_cast<const void *>(bufferArray[j * density + i].c_str()), len);
+			blobArray.push_back(tileBlob);
+			std::cout << i << " " << j <<std::endl;
+			Magick::Image tile(blobArray[j * density + i]);
+			tileArray.push_back(tile);
+			tileArray[j * density + i].magick("PNG");
 		}
 	}
+	// montage processing
+	std::cerr << "pros" << std::endl;
+	Magick::Montage tiling;
+	const Magick::Geometry tilingArrangment(std::to_string(density) + "x" + std::to_string(density));
+	const Magick::Geometry tilingGeometry("+0+0");
+	tiling.tile(tilingArrangment);
+	tiling.geometry(tilingGeometry);
+	Magick::montageImages(&thumb, tileArray.begin(), tileArray.end(), tiling);
+	std::cout << "done" << std::endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -108,7 +124,7 @@ int main(int argc, char *argv[]) {
 
 	// initialize
 	curl_global_init(CURL_GLOBAL_DEFAULT);
-	InitializeMagick(*argv);
+	Magick::InitializeMagick(*argv);
 	int optionRefresh;
 	int optionDensity;
 	std::string lastUpdate = "0";
@@ -123,7 +139,7 @@ int main(int argc, char *argv[]) {
 	} else {
 		optionRefresh = std::atoi(argv[1]);
 		optionDensity = std::atoi(argv[2]);
-	}	
+	}
 
 	// start timing routine
 	while (true) {
@@ -133,8 +149,8 @@ int main(int argc, char *argv[]) {
 		assembleUrl(jsonURL, 0, 0, 0, jsonURL); // get jsonURL
 		downloadRoutine(jsonURL,jsonContent);
 		jsonContent = jsonContent.substr(9,19);
-		// got timestamp updated
 		std::cout << jsonContent << std::endl;
+		// got timestamp updated
 		if (lastUpdate == "" || jsonContent > lastUpdate) {
 			lastUpdate = jsonContent;
 			std::ofstream image(CONFIG_IMAGE);
@@ -143,3 +159,5 @@ int main(int argc, char *argv[]) {
 		std::this_thread::sleep_for(std::chrono::seconds(optionRefresh));
 	}
 }
+
+
