@@ -170,6 +170,10 @@ int main(int argc, char *argv[]) {
 	if (!boost::filesystem::exists(confDir)) {
 		boost::filesystem::create_directory(confDir);
 	}
+	// store pid of itself
+	std::ofstream pidFile(CONFIG_DIR + "pid");
+	pidFile << ::getpid() << std::endl;
+	pidFile.close();
 	// ioInstance logHandler(CONFIG_DIR + "log.txt");
 
 	// initialize
