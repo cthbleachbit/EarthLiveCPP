@@ -81,13 +81,13 @@ stop () {
 }
 
 toggle_autostart () {
-	if [[ -f ${HOME}/.config/autostart/EarthLiveStart.desktop ]]; then
-		rm -rf ${HOME}/.config/autostart/EarthLiveStart.desktop
+	if [[ -f ${HOME}/.config/autostart/EarthLiveCPPStart.desktop ]]; then
+		rm -rf ${HOME}/.config/autostart/EarthLiveCPPStart.desktop
 		stop
 		show_dialog --info --text="$(gettext 'Will not autostart now.')"
 	else
 		[[ -d ${HOME}/.config/autostart ]] || mkdir -p ${HOME}/.config/autostart
-		ln -sf /usr/local/share/applications/EarthLiveStart.desktop ${HOME}/.config/autostart/EarthLiveStart.desktop
+		ln -sf /usr/local/share/applications/EarthLiveCPPStart.desktop ${HOME}/.config/autostart/EarthLiveCPPStart.desktop
 		show_dialog --info --text="$(gettext 'Autostart configured!')"
 	fi
 }

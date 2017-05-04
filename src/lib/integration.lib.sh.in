@@ -15,7 +15,7 @@
 
 VERSION='@ver@'
 
-opt_store="${HOME}/.earthliveshell"
+opt_store="${HOME}/.earthlivecpp"
 
 # Configuration save and restore
 if [[ "$opt_guienv" == "gnome" ]] || [[ "$opt_guienv" == "unity" ]]; then
