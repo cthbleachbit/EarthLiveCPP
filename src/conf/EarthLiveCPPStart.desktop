@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Start EarthLiveCPP
+Comment=Live view of the Earth from space
+Exec=earthlive-cpp --start
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Type=Application
+
+Name[en_US]=Start EarthLiveCPP
+Name[zh_CN]=启动 EarthLiveCPP

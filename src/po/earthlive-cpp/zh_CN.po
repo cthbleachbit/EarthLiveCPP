@@ -1,0 +1,90 @@
+# EarthLiveCPP default.po file
+# Copyright (C) 2017
+# This file is distributed under the same license as the EarthLiveCPP package.
+# Tianhao Chai <cth451@gmail.com>, 2017
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: https://github.com/cthbleachbit/EarthLiveCPP\n"
+"POT-Creation-Date: 2017-05-04 20:43-0600\n"
+"PO-Revision-Date: 2017-05-04 22:51-0600\n"
+"Last-Translator: Tianhao Chai <cth451@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: EarthLiveCPP\n"
+"Language: zh_CN\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: gettext\n"
+
+msgid "Gsettings based DE only!"
+msgstr "仅支持基于 Gsettings 的桌面环境"
+
+msgid "Will not autostart now."
+msgstr "将不会自动启动。"
+
+msgid "Choose an option."
+msgstr "选择一个项目"
+
+msgid "Parameter"
+msgstr "参数"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Interval between two image checks in minutes"
+msgstr "两次图像刷新的间隔"
+
+msgid "Image Density"
+msgstr "图像密度"
+
+msgid "%s is now %s minutes. Leave blank if you are not going to change it."
+msgstr "%s 目前是 %s 分钟。留空以放弃更改参数。"
+
+msgid "What? This is a integer only field!"
+msgstr "只能输入数字"
+
+msgid "%s is now %s. Leave blank if you are not going to change it."
+msgstr "%s 目前是 %s 。留空以放弃更改参数。"
+
+msgid ""
+"Density must be one of 1, 2 and 4. To set it higher to 8, 10, 16 and 20, "
+"edit ~/.earthliveshell/earthlive.conf"
+msgstr ""
+"图像密度必须是 1，2，4 中的一个。要设定更高的数值（8，10，16，20），请手动"
+"编辑 ~/.earthliveshell/earthlive.conf"
+
+msgid "EarthLive Service is <b>running</b>."
+msgstr "EarthLive 后台进程<b>运行中</b>"
+
+msgid "Last update: "
+msgstr "最近一次更新："
+
+msgid "EarthLive Service is <b>not running</b>."
+msgstr "EarthLive 后台进程<b>没有启动</b>"
+
+msgid "Restart"
+msgstr "重新启动"
+
+msgid "Stop"
+msgstr "停止"
+
+msgid "Start"
+msgstr "启动"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Toggle Autostart"
+msgstr "切换自动启动"
+
+msgid "Flush Logs"
+msgstr "清除日志"
+
+
+msgid "Check Logs"
+msgstr "检查日志"
+
