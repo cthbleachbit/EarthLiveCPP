@@ -1,29 +1,12 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# vim
+*.tmp
+*.swp
 
-# Precompiled Headers
-*.gch
-*.pch
+# gedit
+*~
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Makefile generated
+src/earthlive-shell
+src/earthlive-daemon
+src/lib/*.sh
+src/elcppd
