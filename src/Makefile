@@ -19,7 +19,7 @@ $(SCRIPTS): ${SCRIPTS:=.in}
 	        $@.in > $@
 
 elcppd: elcppd.cpp
-	g++ -g elcppd.cpp -lboost_filesystem -lcurl -lboost_system -o elcppd $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
+	g++ -std=gnu++11 -Wall $(CFLAGS) $(CPPFLAGS) elcppd.cpp -lboost_filesystem -lcurl -lboost_system -o elcppd $(CXXFLAGS) $(LDFLAGS)
 
 install-scripts: $(SCRIPTS)
 	$(INSTALL) -d $(DESTDIR)$(bindir)
