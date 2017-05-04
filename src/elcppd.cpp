@@ -138,8 +138,8 @@ void imageUpdateRoutine(std::string& timestamp, int density, const std::string& 
 	const std::string cmdTarget = " " + path + "final.png";
 	FILE *f = popen((cmdBase + cmdInput + cmdTiling + cmdGeometry + cmdTarget).c_str(), "r");
 	if ( f == 0 ) {
-        fprintf( stderr, "Could not execute\n" );
-    } else {
+		fprintf( stderr, "Could not execute\n" );
+	} else {
 		pclose(f);
 	};
 	// clean up remaining tiles
@@ -206,12 +206,14 @@ int main(int argc, char *argv[]) {
 			continue;
 		};
 		jsonContent = jsonContent.substr(9,19);
-		std::cout << jsonContent << std::endl;
 		// got timestamp updated
 		if (lastUpdate == "" || jsonContent > lastUpdate) {
 			lastUpdate = jsonContent;
+			std::ofstream lastUpdateFile(CONFIG_DIR + "last_update");
+			lastUpdateFile << lastUpdate << std::endl;
+			lastUpdateFile.close();
 			imageUpdateRoutine(jsonContent, optionDensity, CONFIG_DIR);
 		}
-		std::this_thread::sleep_for(std::chrono::seconds(optionRefresh));
+		std::this_thread::sleep_for(std::chrono::seconds(optionRefresh * 60));
 	}
 }

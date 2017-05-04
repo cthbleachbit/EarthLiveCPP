@@ -6,7 +6,6 @@
 *~
 
 # Makefile generated
-src/earthlive-shell
-src/earthlive-daemon
+src/earthlive-cpp
 src/lib/*.sh
 src/elcppd
