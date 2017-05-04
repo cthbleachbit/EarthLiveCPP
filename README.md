@@ -6,6 +6,10 @@ Live view of the Earth from space, right on your (nix) desktop. Images are from 
 
 For a sneak peek for what this might be like, check [EarthLiveShell](https://github.com/cthbleachbit/EarthLiveShell.git).
 
+#### Usage
+
+Same as [EarthLiveShell](https://github.com/cthbleachbit/EarthLiveShell.git), use `make && sudo make install`. Be sure to stop and disable EarthLiveShell before you start this one.
+
 #### Contributors
 
 * Yue Sun <yues@cs.wisc.edu>
@@ -17,10 +21,10 @@ The C# one can only run on windows, the shell implementation has performance con
 
 ### Libraries used
 
-* `boost/filesystem`
-* `boost/system`
-* `curl`
-* `imagemagick`
+* `boost/filesystem` dev files
+* `boost/system` dev files
+* `curl` dev files
+* `imagemagick` binaries (not linked but via external call)
 
 ### Feature list
 
