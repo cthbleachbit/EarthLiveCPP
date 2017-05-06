@@ -1,7 +1,7 @@
 SCRIPTS		= earthlive-cpp lib/io.lib.sh lib/integration.lib.sh
 SED			= /bin/sed
 SHELL		= /bin/bash
-PREFIX		= /usr/local
+PREFIX		?= /usr/local
 INSTALL		= /usr/bin/env install
 MSGFMT		= /usr/bin/msgfmt
 bindir		= $(PREFIX)/bin
@@ -39,6 +39,7 @@ install-scripts: $(SCRIPTS)
 	done
 
 install-binary: elcppd
+	$(INSTALL) -d $(DESTDIR)$(bindir)
 	$(INSTALL) -m755 elcppd $(DESTDIR)$(bindir)
 
 install: install-scripts install-binary
