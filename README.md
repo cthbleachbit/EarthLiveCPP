@@ -25,6 +25,8 @@ The C# one can only run on windows, the shell implementation has performance con
 * `boost/system` dev files
 * `curl` dev files
 * `imagemagick` binaries (not linked but via external call)
+* `zenity`
+* `msgfmt`
 
 ### Feature list
 
