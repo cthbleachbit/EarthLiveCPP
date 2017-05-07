@@ -1,13 +1,14 @@
 SCRIPTS		= earthlive-cpp lib/io.lib.sh lib/integration.lib.sh
 SED			= /bin/sed
 SHELL		= /bin/bash
+DESTDIR		?= /
 PREFIX		?= /usr/local
 INSTALL		= /usr/bin/env install
 MSGFMT		= /usr/bin/msgfmt
-bindir		= $(PREFIX)/bin
-localedir	= $(PREFIX)/share/locale
-libdir		= $(PREFIX)/lib/earthlive-cpp
-applicationdir	= $(PREFIX)/share/applications
+bindir		= $(DESTDIR)$(PREFIX)/bin
+localedir	= $(DESTDIR)$(PREFIX)/share/locale
+libdir		= $(DESTDIR)$(PREFIX)/lib/earthlive-cpp
+applicationdir	= $(DESTDIR)$(PREFIX)/share/applications
 
 all: $(SCRIPTS) elcppd
 
